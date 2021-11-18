@@ -1,0 +1,200 @@
+\documentclass[10pt, aspectratio=169]{beamer}
+\usetheme{Boadilla}
+\usepackage{xcolor} \usepackage{caption}
+\usepackage{tikz}
+\usepackage{amsfonts,amsthm,amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\title{Back to Normal}
+\subtitle{Some results in Probability and Statistics}
+\author{Aniruddha Deb}
+\institute{IIT Delhi}
+\date{\today}
+
+\definecolor{Burgundy}{RGB}{144,0,32}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem*{remark}{Remark}
+
+\newcommand*{\theorembreak}{\usebeamertemplate{theorem end}\framebreak\usebeamertemplate{theorem begin}}
+
+\theoremstyle{definition}
+
+\captionsetup[figure]{font=footnotesize,labelfont=footnotesize}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Prerequisites}
+\begin{itemize}
+	\item<+-> Normal Random Variables
+	\item<+-> Moment generating functions
+	\item<+-> Characteristic functions
+	\item<+-> Gamma function
+	\item<+-> Power Series and Real Analyticness
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Before we begin}
+\begin{theorem}
+	If $X$ and $Y$ are two random variables such that $M_X^{(k)}(t)$ and $M_Y^{(k)}(t)$ exist, are equal to each other and are real analytic over some neighbourhood $(-h,h)$ containing 0, then the probability distributions of $X$ and $Y$ are the same. \hfill (1)
+\end{theorem}
+\pause
+\begin{proof}
+	A (complicated) proof can be found in Billingsley's \textit{Probability and Measure}, sec. 30.1, pp. 388-89, but the gist of the proof is that you can express the characteristic function as $\varphi(t+x) = \sum_{k=0}^n \frac{\varphi^{(k)}(t)}{k!}x^k,\ |x|<h$. Then taking $t = 0,h-\epsilon,-h+\epsilon,2h-\epsilon,-2h+\epsilon\cdots$ causes the characteristic functions of $X$ and $Y$ to agree in $(-h,h),\ (-2h,2h),\ (-3h,3h)$ and so on. Hence, $X$ and $Y$ have the same distribution.
+\end{proof}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simple results on Normal Random Variables}
+\begin{theorem}
+	If $X \sim N(\mu, \sigma^2)$, then $bX \sim N(b\mu, b^2\sigma^2)$
+\end{theorem}
+\pause
+\begin{proof}
+	Simple transformation of variables; 
+	\begin{align*}
+	f_{bX}(x) &= \frac{1}{b}f_X\left( \frac{x}{b}\right) \\
+	f_{bX}(x) &= \frac{1}{\sqrt{2\pi}b\sigma}\ e^{\frac{(x-b\mu)^2}{2b^2\sigma^2}}
+	\end{align*}
+	which is normally distributed with mean $b\mu$ and variance $b^2\sigma^2$
+\end{proof}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Linearity of Normal Random Variables}
+\begin{theorem}
+	If $X_1, \cdots, X_n$ is a sequence of independent random variables such that $X_i \sim N(\mu_i, \sigma_i^2)$, then any linear combination $$Y = \sum_{i=1}^n b_i X_i$$ is also a normal random variable. In particular, $$Y \sim N\left( \sum_{i=1}^n b_i\mu_i,\ \sum_{i=1}^n b_i^2\sigma_i^2 \right)$$
+\end{theorem}
+\pause
+\begin{proof}
+	Let $\mu = \sum_{i=1}^n b_i\mu_i$ and $\sigma^2 = \sum_{i=1}^n b_i^2\sigma_i^2$ for simplicity. Proceed by comparing the MGF's of $Y$ and $N(\mu, \sigma^2)$. 
+	\begin{align*}
+	M_Y(t) &= E(e^{t(b_1X_1 + \cdots + b_nX_n)}) \\
+	&= \prod_{i=1}^n E(e^{tb_iX_i}) \\
+	&= \prod_{i=1}^n e^{b_i\mu_it + b_i^2\sigma_i^2t^2/2} \\
+	&= e^{t\sum_{i=1}^n b_i\mu_i + \frac{t^2}{2} \sum_{i=1}^n b_i^2\sigma_i^2} \\
+	M_Y(t) &= e^{t\mu + t^2\sigma^2/2} \\
+	M_Y(t) &= M_{N(\mu, \sigma^2)}(t)
+	\end{align*}
+	And by the uniqueness of MGF, $Y$ and $N(\mu, \sigma)$ are identically distributed.
+\end{proof}
+\end{frame}
+
+\begin{frame}
+\frametitle{The $\chi^2$ distribution}
+\begin{definition}
+	If a Random Variable $X$ has the PDF $$f_X(x) = \frac{x^{k/2-1}e^{-x/2}}{2^{k/2}\ \Gamma(k/2)}$$ for nonnegative $x$ and $0$ otherwise, then $X$ is said to follow a $\chi^2_k$ distribution with $k$ degrees of freedom.
+\end{definition}
+\pause
+
+this is not very useful in and of itself, so we'll explore the relationship between the exponential and the $\chi^2$ distributions.
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Relationship between $\chi^2$ and normal random variables}
+\begin{theorem}
+	If $X_1, \cdots, X_n$ is a sequence of $n$ iid random variables such that $X_i \sim N(0,1)$, then $Y = \sum_{i=1}^n X_i^2$ has a $\chi_n^2$ distribution with $n$ degrees of freedom
+\end{theorem}
+\pause
+\begin{proof}
+	\only<2>{
+	Proceed by comparing the moment generating functions of the $\chi_n^2$ distribution and the sum of $n$ iid standard normal random variables.
+	\begin{align*}
+	M_{\chi_n^2}(t) &= \int_{0}^{\infty} \frac{x^{n/2-1}e^{\left(t-\frac12\right)x}}{2^{n/2}\ \Gamma(n/2)} \ dx \\
+	&= \frac{1}{\left( \frac12 - t \right)^{n/2}} \int_{0}^{\infty} \frac{\left(\left(\frac12 - t\right)x\right)^{n/2-1}e^{\left(t-\frac12\right)x}}{2^{n/2}\ \Gamma(n/2)} \ \left( \frac12 -t\right)dx \\
+	M_{\chi_n^2}(t) &= \frac{1}{(1-2t)^{n/2}}
+	\end{align*}}
+
+	\only<3>{
+	\begin{align*}
+	M_{Y}(t) &= E(e^{tY}) \\
+	&= \prod_{i=1}^n E(e^{tX_i^2}) \\
+	&= (M_{X_1^2}(t))^n
+	\end{align*}
+	The PDF of $X_1^2$ is given by 
+	$$f_{X_1^2}(x) = \begin{cases}
+	\frac{1}{\sqrt{2\pi x}}e^{-x/2} & x \ge 0 \\
+	0 & \text{otherwise}
+	\end{cases}$$}
+
+	\only<4>{
+	Hence, the MGF of $X_1^2$ is 
+	\begin{align*}
+	M_{X_1^2}(t) &= \int_{0}^{\infty} \frac{x^{\frac12-1}e^{\left(t-\frac12\right)x}}{\sqrt{2\pi}} \ dx \\
+	&= \frac{1}{\left( \frac12 - t \right)^{1/2}} \int_{0}^{\infty} \frac{\left(\left(\frac12 - t\right)x\right)^{1/2-1}e^{\left(t-\frac12\right)x}}{\sqrt{2\pi}} \ \left( \frac12 -t\right)dx\\
+	M_{X_1^2}(t) &= \frac{1}{\sqrt{1-2t}}
+	\end{align*}}
+
+	\only<5>{
+	This implies that the MGF of $Y$ is $\frac{1}{(1-2t)^{n/2}}$, which is the same as $\chi_n^2$. Equivalence of distributions of $Y$ and $\chi_n^2$ follows from (1). Note that the MGF exists only when $|t| < 1/2$, which, as proven by (1), is a sufficient condition for the distributions to be the same.}
+	\alt<5>{\qedhere}{\phantom\qedhere}
+\end{proof}
+\end{frame}
+
+\begin{frame}
+\frametitle{The t distribution}
+\begin{definition}
+	If a random variable $X$ has the probability distribution given by $$f_X(x) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu \pi}\ \Gamma\left(\frac{\nu}{2}\right)}\left(1+\frac{x^{2}}{\nu}\right)^{-\frac{\nu+1}{2}}$$ then $X$ is said to follow the t-distribution with $\nu$ degrees of freedom.
+\end{definition}
+\pause
+
+Again, this gives us no intuition about the t distribution. To motivate the distribution, we will need to explore sampling first.
+\end{frame}
+
+\begin{frame}
+\frametitle{Sampling}
+\begin{definition}
+	If the random variables $X_1,\ldots,X_n$ are independent and identically distributed, then these random variables constitute a random sample of size $n$ from the common distribution, which has a mean $\mu$ and a standard deviation $\sigma^2$
+
+	We define the sample mean as $$\overline{X} = \frac{1}{n}\sum_{i=1}^n X_i$$ and the sample variance as $$S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \overline{X})^2$$ The denominator here is $n-1$ instead of $n$ so that $E(S^2) = \sigma^2$, that is, to ensure that the sample variance is unbiased.
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\frametitle{Z scores and Z tests}
+\begin{definition}
+	The Standard score (or $Z$ score) of a sample $X$ is the standardized ratio of the sample mean from the mean
+	$$Z = \frac{\overline{X}-\mu}{\sigma/\sqrt{n}}$$
+	This can be used to estimate how far off $X$ is from the mean if the mean is known, or give error bounds for the mean if the mean is unknown. {\tiny ELL101 flashbacks for some of you}
+\end{definition}
+\pause
+\begin{definition}
+	The $Z$ test is used to see how far off a sample is from the mean, assuming that the distribution of the population is standard normal (this is assumed to be true given a large population because of the central limit theorem). For a one-tailed test, $\Phi(Z)$ or $1-\Phi(Z)$ gives the probability of the event that a given sample is picked.
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\frametitle{The t score}
+Note that the $Z$ test only works when the sample mean and variance are known, or can be approximated easily. For small samples (of size 5-10), the variance cannot be approximated easily, and comparatively 'larger' error bounds are needed if the mean is to be calculated. To account for this, we simply replace the standard deviation $\sigma$ with the sample standard deviation $S$, and the corresponding random variable $$T = \frac{\overline{X}-\mu}{S/\sqrt{n}}$$ is called the $T$ score.
+\end{frame}
+
+\begin{frame}
+\frametitle{The t distribution and the t test}
+\begin{definition}
+	The Probability density function of the random variable $T = \frac{\overline{X}-\mu}{S/\sqrt{n}}$ is a t distribution with $n-1$ degrees of freedom.
+\end{definition}
+\pause
+\begin{definition}
+	The t test is similar to the Z test, but rather than use the CDF of the standard normal, we now use the CDF of the t distribution, because the t score obeys a t distribution. The t distribution is more 'heavy-tailed', with the distribution converging to the standard normal as $n \to \infty$.
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\frametitle{References}
+\begin{itemize}
+	\item Billingsley, Patrick. \textit{Probability and Measure}. 3rd ed, Wiley, 1995.
+	\item Hogg, Robert V., et al. \textit{Introduction to Mathematical Statistics}. 7th ed, Pearson, 2013.
+	\item Scholz, Fritz. \textit{\color{Burgundy} \href{http://faculty.washington.edu/fscholz/311/Stat311Location1.pdf}{Elements of Statistical methods}: slides from Stat311 course at University of Washington}. 2010.
+	\item Student. “The Probable Error of a Mean.” \textit{Biometrika}, vol. 6, no. 1, Mar. 1908, p. 1. DOI.org (Crossref), {\color{Burgundy}\url{https://doi.org/10.2307/2331554}}. (This is the original paper by Gosset, a readable copy can be found {\color{Burgundy}\href{http://www.aliquote.org/cours/2012_biomed/biblio/Student1908.pdf}{here}})
+	\item Too many Wikipedia articles
+\end{itemize}
+\end{frame}
+
+\end{document}
